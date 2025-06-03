@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html>More actions
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>XandY Daily Schedule Generator 6 & 7</title>
     <style>
         body {
@@ -185,38 +186,6 @@
             margin: 20px 0;
             color: #666;
         }
-        .form-section {
-            display: none;
-            animation: fadeIn 0.3s ease-in;
-        }
-        .form-section.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #3f51b5;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #e8eaf6;
-        }
-        .date-range-group {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .date-range-group .form-group {
-            margin-right: 0;
-        }
-        .date-separator {
-            font-weight: 600;
-            color: #666;
-            margin: 0 10px;
-        }
     </style>
 </head>
 <body>
@@ -237,21 +206,19 @@
             </div>
         </div>
 
-        <!-- Daily Schedule Form -->
-        <div class="form-section active" id="dailyschedule-form">
-            <div class="section-title">Daily Schedule Details</div>
+        <form id="schedule-form">
             <div class="form-row">
                 <div class="form-group">
-                    <label for="ds-class-select">Class</label>
-                    <select id="ds-class-select" required>
+                    <label for="class-select">Class</label>
+                    <select id="class-select" required>
                         <option value="">Select Class</option>
                         <option value="06">06</option>
                         <option value="07">07</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="ds-board-select">Board</label>
-                    <select id="ds-board-select" required>
+                    <label for="board-select">Board</label>
+                    <select id="board-select" required>
                         <option value="">Select Board</option>
                         <option value="State">State</option>
                         <option value="CBSE">CBSE</option>
@@ -259,247 +226,45 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-row">
                 <div class="form-group">
-                    <label for="ds-subject-select">Subject</label>
-                    <select id="ds-subject-select" required>
+                    <label for="subject-select">Subject</label>
+                    <select id="subject-select" required>
                         <option value="">Select Subject</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="ds-chapter-input">Chapter Name</label>
-                    <input type="text" id="ds-chapter-input" placeholder="Enter chapter name" required>
+                    <label for="chapter-input">Chapter Name</label>
+                    <input type="text" id="chapter-input" placeholder="Enter chapter name" required>
                 </div>
             </div>
+
             <div class="form-row">
                 <div class="form-group">
-                    <label for="ds-topic-select">Topic</label>
-                    <select id="ds-topic-select" required>
+                    <label for="topic-select">Topic</label>
+                    <select id="topic-select" required>
                         <option value="CUSTOM">Custom Topic</option>
                         <option value="LIVE CLASS">LIVE CLASS</option>
                         <option value="WORKBOOK DAY">WORKBOOK DAY</option>
                         <option value="LIVE CLASS & WORK BOOK DAY">LIVE CLASS & WORK BOOK DAY</option>
+                        <option value="EXAM">EXAM</option>
                     </select>
-                    <div class="custom-topic-container" id="ds-custom-topic-container" style="display: block;">
-                        <input type="text" id="ds-custom-topic-input" placeholder="Enter custom topic" required>
+                    <div class="custom-topic-container" id="custom-topic-container">
+                        <input type="text" id="custom-topic-input" placeholder="Enter custom topic">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="ds-date-input">Date</label>
-                    <input type="date" id="ds-date-input" required>
+                    <label for="date-input">Date</label>
+                    <input type="date" id="date-input" required>
                 </div>
             </div>
-        </div>
 
-        <!-- Exam Form -->
-        <div class="form-section" id="exam-form">
-            <div class="section-title">Exam Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="ex-class-select">Class</label>
-                    <select id="ex-class-select" required>
-                        <option value="">Select Class</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ex-board-select">Board</label>
-                    <select id="ex-board-select" required>
-                        <option value="">Select Board</option>
-                        <option value="State">State</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="GCC">GCC</option>
-                    </select>
-                </div>
+            <div class="button-row">
+                <button type="button" id="generate-btn">Generate Schedule</button>
+                <button type="button" id="reset-btn">Reset Form</button>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="ex-subject-select">Subject</label>
-                    <select id="ex-subject-select" required>
-                        <option value="">Select Subject</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ex-chapter-input">Chapter Name</label>
-                    <input type="text" id="ex-chapter-input" placeholder="Enter chapter name" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="ex-date-input">Date</label>
-                    <input type="date" id="ex-date-input" required>
-                </div>
-                <div class="form-group">
-                    <label for="ex-questions-input">Total Questions</label>
-                    <input type="number" id="ex-questions-input" placeholder="e.g., 50" min="1" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="ex-duration-input">Duration (minutes)</label>
-                    <input type="number" id="ex-duration-input" placeholder="e.g., 90" min="1" required>
-                </div>
-            </div>
-        </div>
-
-        <!-- New Content Form -->
-        <div class="form-section" id="newcontent-form">
-            <div class="section-title">New Chapter Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nc-class-select">Class</label>
-                    <select id="nc-class-select" required>
-                        <option value="">Select Class</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nc-board-select">Board</label>
-                    <select id="nc-board-select" required>
-                        <option value="">Select Board</option>
-                        <option value="State">State</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="GCC">GCC</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nc-subject-select">Subject</label>
-                    <select id="nc-subject-select" required>
-                        <option value="">Select Subject</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nc-chapter-input">Chapter Name</label>
-                    <input type="text" id="nc-chapter-input" placeholder="Enter chapter name" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nc-date-input">Date</label>
-                    <input type="date" id="nc-date-input" required>
-                </div>
-            </div>
-        </div>
-
-        <!-- Workbook Form -->
-        <div class="form-section" id="workbook-form">
-            <div class="section-title">Workbook Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="wb-class-select">Class</label>
-                    <select id="wb-class-select" required>
-                        <option value="">Select Class</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="wb-board-select">Board</label>
-                    <select id="wb-board-select" required>
-                        <option value="">Select Board</option>
-                        <option value="State">State</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="GCC">GCC</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row date-range-group">
-                <div class="form-group">
-                    <label for="wb-start-date">From Date</label>
-                    <input type="date" id="wb-start-date" required>
-                </div>
-                <div class="date-separator">to</div>
-                <div class="form-group">
-                    <label for="wb-end-date">To Date</label>
-                    <input type="date" id="wb-end-date" required>
-                </div>
-            </div>
-        </div>
-
-        <!-- Live Class Form -->
-        <div class="form-section" id="live-form">
-            <div class="section-title">Live Class Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="lv-class-select">Class</label>
-                    <select id="lv-class-select" required>
-                        <option value="">Select Class</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="lv-board-select">Board</label>
-                    <select id="lv-board-select" required>
-                        <option value="">Select Board</option>
-                        <option value="State">State</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="GCC">GCC</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="lv-subject-select">Subject</label>
-                    <select id="lv-subject-select" required>
-                        <option value="">Select Subject</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="lv-chapter-input">Chapter Name</label>
-                    <input type="text" id="lv-chapter-input" placeholder="Enter chapter name" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="lv-topic-input">Topic</label>
-                    <input type="text" id="lv-topic-input" placeholder="Enter topic" required>
-                </div>
-                <div class="form-group">
-                    <label for="lv-date-input">Date</label>
-                    <input type="date" id="lv-date-input" required>
-                </div>
-            </div>
-        </div>
-
-        <!-- Study Leave Form -->
-        <div class="form-section" id="studyleave-form">
-            <div class="section-title">Study Leave Details</div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="sl-class-select">Class</label>
-                    <select id="sl-class-select" required>
-                        <option value="">Select Class</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="sl-board-select">Board</label>
-                    <select id="sl-board-select" required>
-                        <option value="">Select Board</option>
-                        <option value="State">State</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="GCC">GCC</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="sl-date-input">Date</label>
-                    <input type="date" id="sl-date-input" required>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-row">
-            <button type="button" id="generate-btn">Generate Schedule</button>
-            <button type="button" id="reset-btn">Reset Form</button>
-        </div>
+        </form>
 
         <div class="preview-container" id="preview-container">
             <h2 class="preview-title">Preview</h2>
@@ -512,15 +277,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date as default for all date inputs
+            // Set today's date as default
             const today = new Date();
             const dateString = today.toISOString().split('T')[0];
-            const dateInputs = document.querySelectorAll('input[type="date"]');
-            dateInputs.forEach(input => {
-                input.value = dateString;
-            });
-            
+            document.getElementById('date-input').value = dateString;
+
             // Initialize elements
+            const classSelect = document.getElementById('class-select');
+            const subjectSelect = document.getElementById('subject-select');
+            const topicSelect = document.getElementById('topic-select');
+            const customTopicContainer = document.getElementById('custom-topic-container');
+            const customTopicInput = document.getElementById('custom-topic-input');
             const generateBtn = document.getElementById('generate-btn');
             const resetBtn = document.getElementById('reset-btn');
             const previewContainer = document.getElementById('preview-container');
@@ -528,8 +295,9 @@
             const downloadBtn = document.getElementById('download-btn');
             const templateGrid = document.getElementById('template-grid');
             const templateLoading = document.getElementById('template-loading');
-            
+
             // Predefined templates with their configurations
+            // Replace these URLs with your actual GitHub repository URLs
             const predefinedTemplates = [
                 {
                     id: 'dailyschedule',
@@ -552,7 +320,7 @@
                         date: { x: 540, y: 400, align: 'center', fontSize: 45, color: '#FFFFFF' },
                         subject: { x: 200, y: 600, align: 'center', fontSize: 38, color: '#FFFFFF' },
                         chapter: { x: 540, y: 680, align: 'center', maxWidth: 650, maxHeight: 110, fontSize: 50, color: '#FFFFFF' },
-                        examDetails: { x: 540, y: 820, align: 'center', maxWidth: 650, maxHeight: 110, fontSize: 38, color: '#81C784' }
+                        topic: { x: 540, y: 820, align: 'center', maxWidth: 650, maxHeight: 110, fontSize: 38, color: '#81C784' }
                     }
                 },
                 {
@@ -564,7 +332,7 @@
                         date: { x: 540, y: 380, align: 'center', fontSize: 48, color: '#FFFFFF' },
                         subject: { x: 270, y: 580, align: 'center', fontSize: 42, color: '#FFFFFF' },
                         chapter: { x: 540, y: 660, align: 'center', maxWidth: 680, maxHeight: 130, fontSize: 52, color: '#FFFFFF' },
-                        newChapter: { x: 540, y: 800, align: 'center', maxWidth: 680, maxHeight: 130, fontSize: 42, color: '#FFB74D' }
+                        topic: { x: 540, y: 800, align: 'center', maxWidth: 680, maxHeight: 130, fontSize: 42, color: '#FFB74D' }
                     }
                 },
                 {
@@ -573,8 +341,10 @@
                     url: 'https://raw.githubusercontent.com/Arja-P/XandY-Schedule-Generator-6th-7th/main/templates/workbook.png',
                     coordinates: {
                         courseBatch: { x: 880, y: 210, align: 'right', fontSize: 62, color: '#9C27B0' },
-                        dateRange: { x: 540, y: 420, align: 'center', fontSize: 52, color: '#FFFFFF' },
-                        workbookText: { x: 540, y: 700, align: 'center', maxWidth: 660, maxHeight: 125, fontSize: 54, color: '#FFFFFF' }
+                        date: { x: 540, y: 420, align: 'center', fontSize: 52, color: '#FFFFFF' },
+                        subject: { x: 220, y: 620, align: 'center', fontSize: 44, color: '#FFFFFF' },
+                        chapter: { x: 540, y: 700, align: 'center', maxWidth: 660, maxHeight: 125, fontSize: 54, color: '#FFFFFF' },
+                        topic: { x: 540, y: 840, align: 'center', maxWidth: 660, maxHeight: 125, fontSize: 44, color: '#E1BEE7' }
                     }
                 },
                 {
@@ -591,33 +361,25 @@
                 },
                 {
                     id: 'studyleave',
-                    name: 'STUDY LEAVE',
+                    name: 'STUDYLEAVE',
                     url: 'https://raw.githubusercontent.com/Arja-P/XandY-Schedule-Generator-6th-7th/main/templates/studyleave.png',
                     coordinates: {
                         courseBatch: { x: 820, y: 190, align: 'right', fontSize: 56, color: '#F44336' },
                         date: { x: 540, y: 390, align: 'center', fontSize: 46, color: '#212121' },
-                        studyLeaveText: { x: 540, y: 670, align: 'center', maxWidth: 640, maxHeight: 115, fontSize: 48, color: '#212121' }
+                        subject: { x: 250, y: 590, align: 'center', fontSize: 40, color: '#212121' },
+                        chapter: { x: 540, y: 670, align: 'center', maxWidth: 640, maxHeight: 115, fontSize: 48, color: '#212121' },
+                        topic: { x: 540, y: 810, align: 'center', maxWidth: 640, maxHeight: 115, fontSize: 40, color: '#F44336' }
                     }
                 }
             ];
-            
+
             let selectedTemplate = predefinedTemplates[0]; // Default to first template
             let loadedTemplateImages = new Map();
-            
+
             // Subject mapping by class
             const subjectsByClass = {
                 '06': ['Math', 'Physics', 'Chemistry', 'Biology'],
                 '07': ['Math', 'Physics', 'Chemistry', 'Biology']
-            };
-
-            // Form sections mapping
-            const formSections = {
-                'dailyschedule': 'dailyschedule-form',
-                'exam': 'exam-form',
-                'newcontent': 'newcontent-form',
-                'workbook': 'workbook-form',
-                'live': 'live-form',
-                'studyleave': 'studyleave-form'
             };
 
             // Load predefined templates
@@ -625,49 +387,55 @@
                 templateLoading.style.display = 'block';
                 let loadedCount = 0;
                 const totalTemplates = predefinedTemplates.length;
-                
+
                 predefinedTemplates.forEach((template, index) => {
                     const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    
+                    img.crossOrigin = 'anonymous'; // Handle CORS if needed
+
                     img.onload = function() {
                         loadedTemplateImages.set(template.id, img);
                         loadedCount++;
-                        
+
+                        // Create template option
                         const templateOption = document.createElement('div');
                         templateOption.className = 'template-option';
                         templateOption.dataset.templateId = template.id;
-                        
+
                         if (index === 0) {
                             templateOption.classList.add('selected');
                         }
-                        
+
                         templateOption.innerHTML = `
                             <img src="${template.url}" alt="${template.name}" class="template-preview">
                             <div class="template-name">${template.name}</div>
                         `;
-                        
+
                         templateOption.addEventListener('click', function() {
+                            // Remove selected class from all templates
                             document.querySelectorAll('.template-option').forEach(opt => {
                                 opt.classList.remove('selected');
                             });
-                            
+
+                            // Add selected class to clicked template
                             this.classList.add('selected');
+
+                            // Update selected template
                             selectedTemplate = predefinedTemplates.find(t => t.id === this.dataset.templateId);
-                            showFormSection(selectedTemplate.id);
                         });
-                        
+
                         templateGrid.appendChild(templateOption);
-                        
+
+                        // Hide loading when all templates are loaded
                         if (loadedCount === totalTemplates) {
                             templateLoading.style.display = 'none';
                         }
                     };
-                    
+
                     img.onerror = function() {
                         console.error(`Failed to load template: ${template.name}`);
                         loadedCount++;
-                        
+
+                        // Create fallback template option
                         const templateOption = document.createElement('div');
                         templateOption.className = 'template-option';
                         templateOption.dataset.templateId = template.id;
@@ -678,373 +446,281 @@
                             </div>
                             <div class="template-name">${template.name}</div>
                         `;
-                        
-                        templateOption.addEventListener('click', function() {
-                            document.querySelectorAll('.template-option').forEach(opt => {
-                                opt.classList.remove('selected');
-                            });
-                            
-                            this.classList.add('selected');
-                            selectedTemplate = predefinedTemplates.find(t => t.id === this.dataset.templateId);
-                            showFormSection(selectedTemplate.id);
-                        });
-                        
                         templateGrid.appendChild(templateOption);
-                        
+
                         if (loadedCount === totalTemplates) {
                             templateLoading.style.display = 'none';
                         }
                     };
-                    
+
                     img.src = template.url;
                 });
             }
 
-            // Show appropriate form section based on template
-            function showFormSection(templateId) {
-                document.querySelectorAll('.form-section').forEach(section => {
-                    section.classList.remove('active');
+            // Update subjects when class changes
+            classSelect.addEventListener('change', updateSubjects);
+
+            function updateSubjects() {
+                const selectedClass = classSelect.value;
+                subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+
+                if (selectedClass && subjectsByClass[selectedClass]) {
+                    subjectsByClass[selectedClass].forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject;
+                        option.textContent = subject;
+                        subjectSelect.appendChild(option);
+                    });
+                }
+            }
+
+            // Toggle custom topic input based on topic selection
+            topicSelect.addEventListener('change', function() {
+                if (this.value === 'CUSTOM') {
+                    customTopicContainer.style.display = 'block';
+                    customTopicInput.required = true;
+                } else {
+                    customTopicContainer.style.display = 'none';
+                    customTopicInput.required = false;
+                }
+            });
+
+            // Set custom topic as default
+            topicSelect.value = 'CUSTOM';
+            customTopicContainer.style.display = 'block';
+            customTopicInput.required = true;
+
+            // Reset form
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('schedule-form').reset();
+                document.getElementById('date-input').value = dateString;
+                updateSubjects();
+                previewContainer.style.display = 'none';
+                topicSelect.value = 'CUSTOM';
+                customTopicContainer.style.display = 'block';
+
+                // Reset template selection to first one
+                document.querySelectorAll('.template-option').forEach(opt => {
+                    opt.classList.remove('selected');
                 });
-                
-                const sectionId = formSections[templateId];
-                if (sectionId) {
-                    document.getElementById(sectionId).classList.add('active');
+                document.querySelector('.template-option').classList.add('selected');
+                selectedTemplate = predefinedTemplates[0];
+            });
+
+            // Generate schedule preview
+            generateBtn.addEventListener('click', function() {
+                const form = document.getElementById('schedule-form');
+
+                // Basic form validation
+                if (!form.checkValidity()) {
+                    alert('Please fill all required fields!');
+                    return;
                 }
+
+                if (topicSelect.value === 'CUSTOM' && !customTopicInput.value.trim()) {
+                    alert('Please enter a custom topic!');
+                    return;
+                }
+
+                if (!selectedTemplate) {
+                    alert('Please select a template!');
+                    return;
+                }
+
+                generateScheduleImage();
+                previewContainer.style.display = 'block';
+                scrollToElement(previewContainer);
+            });
+
+            // Function to calculate optimal font size for given text and constraints
+            function getOptimalFontSize(ctx, text, maxWidth, maxHeight, minFontSize = 20, maxFontSize = 80) {
+                let fontSize = maxFontSize;
+
+                while (fontSize >= minFontSize) {
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    const metrics = ctx.measureText(text);
+                    const textWidth = metrics.width;
+                    const textHeight = fontSize * 1.2;
+
+                    if (textWidth <= maxWidth && textHeight <= maxHeight) {
+                        return fontSize;
+                    }
+
+                    fontSize -= 2;
+                }
+
+                return minFontSize;
             }
 
-            // Initialize all class selectors
-            function initializeClassSelectors() {
-                const classSelectors
-			if (!document.getElementById('subject-select').value) {
-                            alert('Please select a subject!');
-                            return false;
+            // Function to calculate optimal font size for multi-line text
+            function getOptimalFontSizeForMultiLine(ctx, text, maxWidth, maxHeight, minFontSize = 20, maxFontSize = 60) {
+                let fontSize = maxFontSize;
+
+                while (fontSize >= minFontSize) {
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    const lineHeight = fontSize * 1.2;
+
+                    const words = text.split(' ');
+                    let lines = 1;
+                    let currentLineWidth = 0;
+
+                    for (let word of words) {
+                        const wordWidth = ctx.measureText(word + ' ').width;
+
+                        if (currentLineWidth + wordWidth > maxWidth) {
+                            lines++;
+                            currentLineWidth = wordWidth;
+                        } else {
+                            currentLineWidth += wordWidth;
                         }
-                        if (!document.getElementById('chapter-input').value.trim()) {
-                            alert('Please enter a chapter name!');
-                            return false;
-                        }
-                        if (!document.getElementById('date-input').value) {
-                            alert('Please select a date!');
-                            return false;
-                        }
-                        if (topicSelect.value === 'CUSTOM' && !customTopicInput.value.trim()) {
-                            alert('Please enter a custom topic!');
-                            return false;
-                        }
-                        break;
-                        
-                    case 'exam':
-                        if (!document.getElementById('exam-subject-select').value) {
-                            alert('Please select a subject!');
-                            return false;
-                        }
-                        if (!document.getElementById('exam-chapter-input').value.trim()) {
-                            alert('Please enter a chapter name!');
-                            return false;
-                        }
-                        if (!document.getElementById('exam-date-input').value) {
-                            alert('Please select a date!');
-                            return false;
-                        }
-                        if (!document.getElementById('exam-questions-input').value) {
-                            alert('Please enter total questions!');
-                            return false;
-                        }
-                        if (!document.getElementById('exam-duration-input').value) {
-                            alert('Please enter exam duration!');
-                            return false;
-                        }
-                        break;
-                        
-                    case 'newcontent':
-                        if (!document.getElementById('newcontent-subject-select').value) {
-                            alert('Please select a subject!');
-                            return false;
-                        }
-                        if (!document.getElementById('newcontent-chapter-input').value.trim()) {
-                            alert('Please enter a chapter name!');
-                            return false;
-                        }
-                        if (!document.getElementById('newcontent-date-input').value) {
-                            alert('Please select a date!');
-                            return false;
-                        }
-                        break;
-                        
-                    case 'workbook':
-                        if (!document.getElementById('workbook-subject-select').value) {
-                            alert('Please select a subject!');
-                            return false;
-                        }
-                        if (!document.getElementById('workbook-chapter-input').value.trim()) {
-                            alert('Please enter a chapter name!');
-                            return false;
-                        }
-                        if (!document.getElementById('workbook-start-date').value) {
-                            alert('Please select start date!');
-                            return false;
-                        }
-                        if (!document.getElementById('workbook-end-date').value) {
-                            alert('Please select end date!');
-                            return false;
-                        }
-                        // Validate date range
-                        const startDate = new Date(document.getElementById('workbook-start-date').value);
-                        const endDate = new Date(document.getElementById('workbook-end-date').value);
-                        if (startDate >= endDate) {
-                            alert('End date must be after start date!');
-                            return false;
-                        }
-                        break;
-                        
-                    case 'live':
-                        if (!document.getElementById('live-subject-select').value) {
-                            alert('Please select a subject!');
-                            return false;
-                        }
-                        if (!document.getElementById('live-chapter-input').value.trim()) {
-                            alert('Please enter a chapter name!');
-                            return false;
-                        }
-                        if (!document.getElementById('live-topic-input').value.trim()) {
-                            alert('Please enter a topic!');
-                            return false;
-                        }
-                        if (!document.getElementById('live-date-input').value) {
-                            alert('Please select a date!');
-                            return false;
-                        }
-                        break;
-                        
-                    case 'studyleave':
-                        if (!document.getElementById('studyleave-date-input').value) {
-                            alert('Please select a date!');
-                            return false;
-                        }
-                        break;
-                        
-                    default:
-                        alert('Please select a valid template!');
-                        return false;
+                    }
+
+                    const totalHeight = lines * lineHeight;
+
+                    if (totalHeight <= maxHeight) {
+                        return fontSize;
+                    }
+
+                    fontSize -= 2;
                 }
-                
-                return true;
+
+                return minFontSize;
             }
 
-            // Generate schedule image
+            // Enhanced wrapText function with adaptive font size
+            function wrapTextWithAdaptiveSize(ctx, text, config) {
+                const { x, y, maxWidth, maxHeight, fontSize: initialFontSize } = config;
+
+                // Calculate optimal font size
+                const optimalFontSize = getOptimalFontSizeForMultiLine(ctx, text, maxWidth, maxHeight, 20, initialFontSize);
+                ctx.font = `bold ${optimalFontSize}px Arial`;
+
+                const lineHeight = optimalFontSize * 1.2;
+                const words = text.split(' ');
+                let line = '';
+                let currentY = y;
+
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = ctx.measureText(testLine);
+                    const testWidth = metrics.width;
+
+                    if (testWidth > maxWidth && n > 0) {
+                        ctx.fillText(line.trim(), x, currentY);
+                        line = words[n] + ' ';
+                        currentY += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+
+                ctx.fillText(line.trim(), x, currentY);
+                return optimalFontSize;
+            }
+
+            // Create and render the schedule image
             function generateScheduleImage() {
-                const canvas = schedulePreview;
+                const canvas = document.getElementById('schedule-preview');
                 const ctx = canvas.getContext('2d');
-                
+
                 // Set canvas size
                 canvas.width = 1080;
                 canvas.height = 1080;
-                
+
+                // Get form values
+                const selectedClass = document.getElementById('class-select').value;
+                const selectedBoard = document.getElementById('board-select').value;
+                const selectedSubject = document.getElementById('subject-select').value;
+                const chapterName = document.getElementById('chapter-input').value.toUpperCase();
+                const topicType = document.getElementById('topic-select').value;
+                const customTopic = document.getElementById('custom-topic-input').value;
+
+                // Format date
+                const dateInput = document.getElementById('date-input').value;
+                const dateObj = new Date(dateInput);
+                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                }).toUpperCase();
+
+                // Course batch text
+                const courseBatchText = `${selectedBoard} ${selectedClass}`;
+
+                // Topic text
+                const topicText = topicType === 'CUSTOM' ? customTopic : topicType;
+
                 // Get template image
                 const templateImg = loadedTemplateImages.get(selectedTemplate.id);
+
                 if (!templateImg) {
                     alert('Template image not loaded. Please try again.');
                     return;
                 }
-                
-                // Draw template background
+
+                // Draw template image first
                 ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
-                
-                // Get form data based on template
-                const formData = getFormDataForTemplate();
-                
-                // Draw text on canvas
-                drawTextOnCanvas(ctx, formData);
-            }
 
-            // Get form data based on selected template
-            function getFormDataForTemplate() {
-                const templateId = selectedTemplate.id;
-                const classValue = classSelect.value;
-                const boardValue = document.getElementById('board-select').value;
-                const courseBatch = `${classValue} ${boardValue}`;
-                
-                const baseData = {
-                    courseBatch: courseBatch
-                };
-                
-                switch (templateId) {
-                    case 'dailyschedule':
-                        return {
-                            ...baseData,
-                            date: formatDate(document.getElementById('date-input').value),
-                            subject: document.getElementById('subject-select').value,
-                            chapter: document.getElementById('chapter-input').value,
-                            topic: topicSelect.value === 'CUSTOM' ? customTopicInput.value : topicSelect.value
-                        };
-                        
-                    case 'exam':
-                        const questions = document.getElementById('exam-questions-input').value;
-                        const duration = document.getElementById('exam-duration-input').value;
-                        return {
-                            ...baseData,
-                            date: formatDate(document.getElementById('exam-date-input').value),
-                            subject: document.getElementById('exam-subject-select').value,
-                            chapter: document.getElementById('exam-chapter-input').value,
-                            examInfo: `${questions} Questions | ${duration} Minutes`
-                        };
-                        
-                    case 'newcontent':
-                        return {
-                            ...baseData,
-                            date: formatDate(document.getElementById('newcontent-date-input').value),
-                            subject: document.getElementById('newcontent-subject-select').value,
-                            chapter: document.getElementById('newcontent-chapter-input').value
-                        };
-                        
-                    case 'workbook':
-                        const startDate = formatDate(document.getElementById('workbook-start-date').value);
-                        const endDate = formatDate(document.getElementById('workbook-end-date').value);
-                        return {
-                            ...baseData,
-                            dateRange: `${startDate} to ${endDate}`,
-                            subject: document.getElementById('workbook-subject-select').value,
-                            chapter: document.getElementById('workbook-chapter-input').value
-                        };
-                        
-                    case 'live':
-                        return {
-                            ...baseData,
-                            date: formatDate(document.getElementById('live-date-input').value),
-                            subject: document.getElementById('live-subject-select').value,
-                            chapter: document.getElementById('live-chapter-input').value,
-                            topic: document.getElementById('live-topic-input').value
-                        };
-                        
-                    case 'studyleave':
-                        return {
-                            ...baseData,
-                            date: formatDate(document.getElementById('studyleave-date-input').value)
-                        };
-                        
-                    default:
-                        return baseData;
-                }
-            }
-
-            // Format date to readable format
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                };
-                return date.toLocaleDateString('en-US', options);
-            }
-
-            // Draw text on canvas with proper positioning and styling
-            function drawTextOnCanvas(ctx, data) {
+                // Get coordinates for selected template
                 const coords = selectedTemplate.coordinates;
-                
-                // Set font properties
-                ctx.textBaseline = 'middle';
-                ctx.font = 'bold 40px Arial, sans-serif';
-                
-                // Draw each text element according to template coordinates
-                Object.keys(coords).forEach(key => {
-                    if (data[key]) {
-                        const coord = coords[key];
-                        const text = data[key];
-                        
-                        // Set font size and color
-                        ctx.font = `bold ${coord.fontSize}px Arial, sans-serif`;
-                        ctx.fillStyle = coord.color;
-                        
-                        // Set text alignment
-                        ctx.textAlign = coord.align || 'left';
-                        
-                        // Handle text with max width/height constraints
-                        if (coord.maxWidth && coord.maxHeight) {
-                            drawMultilineText(ctx, text, coord.x, coord.y, coord.maxWidth, coord.maxHeight, coord.fontSize);
-                        } else {
-                            ctx.fillText(text, coord.x, coord.y);
-                        }
-                    }
-                });
+
+                // Draw batch text
+                ctx.font = `bold ${coords.courseBatch.fontSize}px Arial`;
+                ctx.fillStyle = coords.courseBatch.color;
+                ctx.textAlign = coords.courseBatch.align;
+                ctx.fillText(courseBatchText, coords.courseBatch.x, coords.courseBatch.y);
+
+                // Draw date
+                ctx.font = `bold ${coords.date.fontSize}px Arial`;
+                ctx.fillStyle = coords.date.color;
+                ctx.textAlign = coords.date.align;
+                ctx.fillText(formattedDate, coords.date.x, coords.date.y);
+
+                // Draw subject
+                ctx.font = `bold ${coords.subject.fontSize}px Arial`;
+                ctx.fillStyle = coords.subject.color;
+                ctx.textAlign = coords.subject.align;
+                ctx.fillText(selectedSubject, coords.subject.x, coords.subject.y);
+
+                // Draw chapter with adaptive font size and word wrapping
+                ctx.fillStyle = coords.chapter.color;
+                ctx.textAlign = coords.chapter.align;
+                wrapTextWithAdaptiveSize(ctx, chapterName.toUpperCase(), coords.chapter);
+
+                // Draw topic with adaptive font size and word wrapping
+                ctx.fillStyle = coords.topic.color;
+                ctx.textAlign = coords.topic.align;
+                wrapTextWithAdaptiveSize(ctx, topicText.toUpperCase(), coords.topic);
             }
 
-            // Draw multiline text within specified bounds
-            function drawMultilineText(ctx, text, x, y, maxWidth, maxHeight, fontSize) {
-                const words = text.split(' ');
-                const lines = [];
-                let currentLine = '';
-                
-                // Break text into lines
-                for (let i = 0; i < words.length; i++) {
-                    const testLine = currentLine + words[i] + ' ';
-                    const metrics = ctx.measureText(testLine);
-                    const testWidth = metrics.width;
-                    
-                    if (testWidth > maxWidth && i > 0) {
-                        lines.push(currentLine.trim());
-                        currentLine = words[i] + ' ';
-                    } else {
-                        currentLine = testLine;
-                    }
-                }
-                lines.push(currentLine.trim());
-                
-                // Calculate line height and starting Y position
-                const lineHeight = fontSize * 1.2;
-                const totalHeight = lines.length * lineHeight;
-                const startY = y - (totalHeight / 2) + (lineHeight / 2);
-                
-                // Draw each line
-                lines.forEach((line, index) => {
-                    const lineY = startY + (index * lineHeight);
-                    ctx.fillText(line, x, lineY);
-                });
-            }
-
-            // Scroll to element smoothly
-            function scrollToElement(element) {
-                element.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }
-
-            // Download generated schedule
+            // Download functionality
             downloadBtn.addEventListener('click', function() {
-                const canvas = schedulePreview;
-                const templateName = selectedTemplate.name.replace(/\s+/g, '_');
-                const classValue = classSelect.value;
-                const boardValue = document.getElementById('board-select').value;
-                const date = new Date().toISOString().split('T')[0];
-                
-                const filename = `${templateName}_Class${classValue}_${boardValue}_${date}.png`;
-                
-                // Create download link
+                const canvas = document.getElementById('schedule-preview');
+                const selectedClass = document.getElementById('class-select').value;
+                const selectedSubject = document.getElementById('subject-select').value;
+                const dateInput = document.getElementById('date-input').value;
+                const dateObj = new Date(dateInput);
+                const formattedDateFilename = dateObj.toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).replace(/\//g, '-');
+
                 const link = document.createElement('a');
-                link.download = filename;
+                link.download = `XandY_${selectedClass}_${selectedSubject}_${formattedDateFilename}_${selectedTemplate.name.replace(/\s+/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png');
-                
-                // Trigger download
-                document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
             });
 
-            // Initialize the application
+            function scrollToElement(element) {
+                window.scrollTo({
+                    top: element.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Initialize templates on page load
             loadTemplates();
-            
-            // Set workbook end date automatically when start date changes
-            document.getElementById('workbook-start-date').addEventListener('change', function() {
-                const startDate = new Date(this.value);
-                if (!isNaN(startDate.getTime())) {
-                    // Set end date to 7 days after start date by default
-                    const endDate = new Date(startDate);
-                    endDate.setDate(startDate.getDate() + 7);
-                    document.getElementById('workbook-end-date').value = endDate.toISOString().split('T')[0];
-                }
-            });
         });
     </script>
 </body>

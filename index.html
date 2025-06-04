@@ -214,20 +214,20 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group" id="subject-group">
                     <label for="subject-select">Subject</label>
                     <select id="subject-select" required>
                         <option value="">Select Subject</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="chapter-group">
                     <label for="chapter-input">Chapter Name</label>
                     <input type="text" id="chapter-input" placeholder="Enter chapter name" required>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group conditional-fields" id="topic-field">
                     <label for="topic-input">Topic</label>
                     <input type="text" id="topic-input" placeholder="Enter topic" required>
                 </div>
@@ -282,13 +282,25 @@
                     id: 'dailyschedule',
                     name: 'DAILY SCHEDULE',
                     url: 'https://raw.githubusercontent.com/Arja-P/XandY-Schedule-Generator-6th-7th/main/templates/dailyschedule.png',
-                    fields: ['course', 'date', 'subject', 'chapter', 'topic', 'newcontent'],
+                    fields: ['course', 'date', 'subject', 'chapter', 'topic'],
                     coordinates: {
                         courseBatch: { x: 900, y: 225, align: 'right', fontSize: 60, color: '#3F51B5' },
                         date: { x: 575, y: 450, align: 'center', fontSize: 50, color: '#FFFFFF' },
                         subject: { x: 245, y: 645, align: 'center', fontSize: 40, color: '#FFFFFF' },
                         chapter: { x: 550, y: 720, align: 'center', maxWidth: 670, maxHeight: 120, fontSize: 55, color: '#FFFFFF' },
                         topic: { x: 550, y: 860, align: 'center', maxWidth: 670, maxHeight: 120, fontSize: 40, color: '#FFD54F' }
+                    }
+                },
+                {
+                    id: 'newcontent',
+                    name: 'NEW CONTENT',
+                    url: 'https://raw.githubusercontent.com/Arja-P/XandY-Schedule-Generator-6th-7th/main/templates/newcontent.png',
+                    fields: ['course', 'date', 'subject', 'chapter'],
+                    coordinates: {
+                        courseBatch: { x: 900, y: 225, align: 'right', fontSize: 60, color: '#3F51B5' },
+                        date: { x: 575, y: 450, align: 'center', fontSize: 50, color: '#FFFFFF' },
+                        subject: { x: 245, y: 645, align: 'center', fontSize: 40, color: '#FFFFFF' },
+                        chapter: { x: 550, y: 720, align: 'center', maxWidth: 670, maxHeight: 120, fontSize: 55, color: '#FFFFFF' }
                     }
                 },
                 {
@@ -313,7 +325,8 @@
                         date: { x: 540, y: 400, align: 'center', fontSize: 45, color: '#FFFFFF' },
                         subject: { x: 200, y: 600, align: 'center', fontSize: 38, color: '#FFFFFF' },
                         chapter: { x: 540, y: 680, align: 'center', maxWidth: 650, maxHeight: 110, fontSize: 50, color: '#FFFFFF' },
-                        examInfo: { x: 540, y: 820, align: 'center', maxWidth: 650, maxHeight: 110, fontSize: 38, color: '#81C784' }
+                        totalQuestions: { x: 540, y: 780, align: 'center', fontSize: 38, color: '#81C784' },
+                        totalDuration: { x: 540, y: 820, align: 'center', fontSize: 38, color: '#81C784' }
                     }
                 },
                 {
@@ -392,17 +405,6 @@
 
                     img.onerror = function() {
                         loadedCount++;
-                        const templateOption = document.createElement('div');
-                        templateOption.className = 'template-option';
-                        templateOption.dataset.templateId = template.id;
-                        templateOption.innerHTML = `
-                            <div style="height: 150px; display: flex; align-items: center; justify-content: center; color: #666;">
-                                Template Not Available
-                            </div>
-                            <div class="template-name">${template.name}</div>
-                        `;
-                        templateGrid.appendChild(templateOption);
-
                         if (loadedCount === totalTemplates) {
                             templateLoading.style.display = 'none';
                         }
@@ -418,9 +420,17 @@
                     field.querySelectorAll('input').forEach(input => input.required = false);
                 });
 
+                document.getElementById('subject-group').style.display = 'block';
+                document.getElementById('chapter-group').style.display = 'block';
+
                 if (selectedTemplate.fields.includes('time')) {
                     document.getElementById('time-field').classList.add('show');
                     document.getElementById('time-input').required = true;
+                }
+
+                if (selectedTemplate.fields.includes('topic')) {
+                    document.getElementById('topic-field').classList.add('show');
+                    document.getElementById('topic-input').required = true;
                 }
 
                 if (selectedTemplate.fields.includes('newcontent')) {
@@ -433,13 +443,15 @@
                     document.getElementById('total-duration-input').required = true;
                 }
 
-                const fieldsToHide = ['subject', 'chapter', 'topic'];
-                fieldsToHide.forEach(field => {
-                    const fieldElement = document.querySelector(`[for="${field}-${field === 'topic' ? 'input' : 'select'}"]`)?.parentElement;
-                    if (fieldElement) {
-                        fieldElement.style.display = selectedTemplate.fields.includes(field) ? 'block' : 'none';
-                    }
-                });
+                if (!selectedTemplate.fields.includes('subject')) {
+                    document.getElementById('subject-group').style.display = 'none';
+                    document.getElementById('subject-select').required = false;
+                }
+
+                if (!selectedTemplate.fields.includes('chapter')) {
+                    document.getElementById('chapter-group').style.display = 'none';
+                    document.getElementById('chapter-input').required = false;
+                }
             }
 
             classSelect.addEventListener('change', updateSubjects);
@@ -474,14 +486,17 @@
 
             generateBtn.addEventListener('click', function() {
                 const form = document.getElementById('schedule-form');
+                const requiredFields = form.querySelectorAll('[required]:not([style*="display: none"])');
+                let isValid = true;
 
-                if (!form.checkValidity()) {
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
                     alert('Please fill all required fields!');
-                    return;
-                }
-
-                if (!selectedTemplate) {
-                    alert('Please select a template!');
                     return;
                 }
 
@@ -611,19 +626,27 @@
                     wrapTextWithAdaptiveSize(ctx, topicText, coords.topic);
                 }
 
-                if (selectedTemplate.id === 'exam' && coords.examInfo) {
-                    const examText = `${totalQuestions} Questions | ${totalDuration} Minutes`;
-                    ctx.font = `bold ${coords.examInfo.fontSize}px Arial`;
-                    ctx.fillStyle = coords.examInfo.color;
-                    ctx.textAlign = coords.examInfo.align;
-                    ctx.fillText(examText, coords.examInfo.x, coords.examInfo.y);
+                if (selectedTemplate.id === 'exam') {
+                    if (coords.totalQuestions && totalQuestions) {
+                        ctx.font = `bold ${coords.totalQuestions.fontSize}px Arial`;
+                        ctx.fillStyle = coords.totalQuestions.color;
+                        ctx.textAlign = coords.totalQuestions.align;
+                        ctx.fillText(`Questions: ${totalQuestions}`, coords.totalQuestions.x, coords.totalQuestions.y);
+                    }
+                    
+                    if (coords.totalDuration && totalDuration) {
+                        ctx.font = `bold ${coords.totalDuration.fontSize}px Arial`;
+                        ctx.fillStyle = coords.totalDuration.color;
+                        ctx.textAlign = coords.totalDuration.align;
+                        ctx.fillText(`Duration: ${totalDuration} Min`, coords.totalDuration.x, coords.totalDuration.y);
+                    }
                 }
             }
 
             document.getElementById('download-btn').addEventListener('click', function() {
                 const canvas = document.getElementById('schedule-preview');
                 const selectedClass = document.getElementById('class-select').value;
-                const selectedSubject = document.getElementById('subject-select').value;
+                const selectedSubject = document.getElementById('subject-select').value || 'General';
                 const dateInput = document.getElementById('date-input').value;
                 const dateObj = new Date(dateInput);
                 const formattedDateFilename = dateObj.toLocaleDateString('en-US', {

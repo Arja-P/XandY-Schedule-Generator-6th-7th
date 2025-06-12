@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XandY Daily Schedule Generator 6 & 7</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X15ETGCFXY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-X15ETGCFXY');
+    </script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -195,7 +204,7 @@
                     <label for="board-select">Board</label>
                     <select id="board-select" required>
                         <option value="">Select Board</option>
-                        <option value="STATE">STATE</option>
+                        <option value="State">State</option>
                         <option value="CBSE">CBSE</option>
                         <option value="GCC">GCC</option>
                     </select>
@@ -335,8 +344,8 @@
                     url: 'templates/studyleave.png',
                     fields: ['course', 'date'],
                     coordinates: {
-                        courseBatch: { x: 1040, y: 60, align: 'right', fontSize: 40, color: '#7C3333' },
-                        date: { x: 1040, y: 120, align: 'right', fontSize: 40, color: '#7C3333' }
+                        courseBatch: { x: 1040, y: 60, align: 'right', fontSize: 50, color: '#7C3333' },
+                        date: { x: 1040, y: 120, align: 'right', fontSize: 50, color: '#7C3333' }
                     }
                 },
                 {
@@ -504,29 +513,22 @@
                 previewContainer.scrollIntoView({ behavior: 'smooth' });
             });
 
-            // Function to draw text with black outline
             function drawTextWithOutline(ctx, text, x, y, fillColor, outlineColor = '#000000', outlineWidth = 3) {
-                // Save current context settings
                 const originalFillStyle = ctx.fillStyle;
                 const originalStrokeStyle = ctx.strokeStyle;
                 const originalLineWidth = ctx.lineWidth;
                 const originalLineJoin = ctx.lineJoin;
                 const originalMiterLimit = ctx.miterLimit;
 
-                // Set outline properties
                 ctx.strokeStyle = outlineColor;
                 ctx.lineWidth = outlineWidth;
                 ctx.lineJoin = 'round';
                 ctx.miterLimit = 2;
-
-                // Draw outline
                 ctx.strokeText(text, x, y);
 
-                // Draw fill
                 ctx.fillStyle = fillColor;
                 ctx.fillText(text, x, y);
 
-                // Restore original settings
                 ctx.fillStyle = originalFillStyle;
                 ctx.strokeStyle = originalStrokeStyle;
                 ctx.lineWidth = originalLineWidth;
@@ -534,33 +536,29 @@
                 ctx.miterLimit = originalMiterLimit;
             }
 
-            function wrapTextWithAdaptiveSize(ctx, text, config) {
-                const { x, y, maxWidth, maxHeight, fontSize: initialFontSize, color } = config;
-                let fontSize = initialFontSize;
-
-                while (fontSize >= 20) {
-                    ctx.font = `bold ${fontSize}px Arial`;
-                    const lineHeight = fontSize * 1.2;
-                    const words = text.split(' ');
-                    let lines = 1;
-                    let currentLineWidth = 0;
-
-                    for (let word of words) {
-                        const wordWidth = ctx.measureText(word + ' ').width;
-                        if (currentLineWidth + wordWidth > maxWidth) {
-                            lines++;
-                            currentLineWidth = wordWidth;
-                        } else {
-                            currentLineWidth += wordWidth;
-                        }
-                    }
-
-                    if (lines * lineHeight <= maxHeight) break;
-                    fontSize -= 2;
+            function calculateDynamicFontSize(text, baseFontSize, minFontSize = 30) {
+                const textLength = text.length;
+                let fontSize;
+                
+                if (textLength <= 8) {
+                    fontSize = baseFontSize;
+                } else if (textLength <= 20) {
+                    fontSize = Math.max(baseFontSize * 0.9, minFontSize);
+                } else if (textLength <= 35) {
+                    fontSize = Math.max(baseFontSize * 0.7, minFontSize);
+                } else {
+                    fontSize = Math.max(baseFontSize * 0.6, minFontSize);
                 }
+                
+                return fontSize;
+            }
 
-                ctx.font = `bold ${fontSize}px Arial`;
-                const lineHeight = fontSize * 1.2;
+            function wrapTextWithDynamicSize(ctx, text, config) {
+                const { x, y, maxWidth, maxHeight, fontSize: baseFontSize, color } = config;
+                const dynamicFontSize = calculateDynamicFontSize(text, baseFontSize);
+                
+                ctx.font = `bold ${dynamicFontSize}px Arial`;
+                const lineHeight = dynamicFontSize * 1.2;
                 const words = text.split(' ');
                 let line = '';
                 let currentY = y;
@@ -601,13 +599,11 @@
                 const selectedSubject = document.getElementById('subject-select').value;
                 const chapterName = document.getElementById('chapter-input').value.toUpperCase();
                 const topicText = document.getElementById('topic-input').value.toUpperCase();
-                const newContent = document.getElementById('newcontent-input').value.toUpperCase();
 
                 const dateInput = document.getElementById('date-input').value;
                 const timeInput = document.getElementById('time-input').value;
                 const dateObj = new Date(dateInput);
                 
-                // Format date for live class with proper line breaks
                 const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUNE', 
                                   'JULY', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
                 const month = monthNames[dateObj.getMonth()];
@@ -622,7 +618,6 @@
 
                 const totalQuestions = document.getElementById('total-questions-input').value;
                 const totalDuration = document.getElementById('total-duration-input').value;
-
                 const courseBatchText = `${selectedBoard} ${selectedClass}`;
 
                 const templateImg = loadedTemplateImages.get(selectedTemplate.id);
@@ -634,84 +629,58 @@
                 ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
                 const coords = selectedTemplate.coordinates;
 
-                // Course/Batch text with outline
                 ctx.font = `bold ${coords.courseBatch.fontSize}px Arial`;
                 ctx.textAlign = coords.courseBatch.align;
                 drawTextWithOutline(ctx, courseBatchText, coords.courseBatch.x, coords.courseBatch.y, coords.courseBatch.color);
 
                 if (selectedTemplate.id === 'live' && timeInput) {
-                    // Format time in 12-hour format
                     const time12Hour = convertTo12Hour(timeInput);
-                    
-                    // Create the 4-line format for live class
-                    const dateTimeLines = [
-                        `${month}  ${day}`,
-                        `${year}`,
-                        `${time12Hour}`,
-                        'IST'
-                    ];
+                    const dateTimeLines = [`${month}  ${day}`, `${year}`, `${time12Hour}`, 'IST'];
                     
                     ctx.font = `bold ${coords.datetime.fontSize}px Arial`;
                     ctx.textAlign = coords.datetime.align;
                     
-                    // Calculate line height and starting position
                     const lineHeight = coords.datetime.fontSize * 1.1;
                     const totalHeight = (dateTimeLines.length - 1) * lineHeight;
                     const startY = coords.datetime.y - (totalHeight / 2);
                     
-                    // Draw each line with outline
                     dateTimeLines.forEach((line, index) => {
                         drawTextWithOutline(ctx, line, coords.datetime.x, startY + (index * lineHeight), coords.datetime.color);
                     });
                 } else if (coords.date) {
                     ctx.font = `bold ${coords.date.fontSize}px Arial`;
                     ctx.textAlign = coords.date.align;
-                    
-                    // Handle multi-line date if it contains \n
-                    if (formattedDate.includes('\n')) {
-                        const lines = formattedDate.split('\n');
-                        const lineHeight = coords.date.fontSize * 1.2;
-                        const startY = coords.date.y - ((lines.length - 1) * lineHeight / 2);
-                        
-                        lines.forEach((line, index) => {
-                            drawTextWithOutline(ctx, line, coords.date.x, startY + (index * lineHeight), coords.date.color);
-                        });
-                    } else {
-                        drawTextWithOutline(ctx, formattedDate, coords.date.x, coords.date.y, coords.date.color);
-                    }
+                    drawTextWithOutline(ctx, formattedDate, coords.date.x, coords.date.y, coords.date.color);
                 }
 
-                // Subject text with outline
                 if (coords.subject && selectedTemplate.fields.includes('subject')) {
-                    ctx.font = `bold ${coords.subject.fontSize}px Arial`;
+                    const subjectFontSize = calculateDynamicFontSize(selectedSubject, coords.subject.fontSize, 30);
+                    ctx.font = `bold ${subjectFontSize}px Arial`;
                     ctx.textAlign = coords.subject.align;
                     drawTextWithOutline(ctx, selectedSubject, coords.subject.x, coords.subject.y, coords.subject.color);
                 }
 
-                // Chapter text with outline (using adaptive wrapping)
                 if (coords.chapter && selectedTemplate.fields.includes('chapter')) {
                     ctx.textAlign = coords.chapter.align;
-                    wrapTextWithAdaptiveSize(ctx, chapterName, coords.chapter);
+                    wrapTextWithDynamicSize(ctx, chapterName, coords.chapter);
                 }
 
-                // Topic text with outline (using adaptive wrapping)
                 if (coords.topic && selectedTemplate.fields.includes('topic')) {
                     ctx.textAlign = coords.topic.align;
-                    wrapTextWithAdaptiveSize(ctx, topicText, coords.topic);
+                    wrapTextWithDynamicSize(ctx, topicText, coords.topic);
                 }
 
-                // Exam specific fields with outline
                 if (selectedTemplate.id === 'exam') {
                     if (coords.totalQuestions && totalQuestions) {
                         ctx.font = `bold ${coords.totalQuestions.fontSize}px Arial`;
                         ctx.textAlign = coords.totalQuestions.align;
-                        drawTextWithOutline(ctx, ` ${totalQuestions}`, coords.totalQuestions.x, coords.totalQuestions.y, coords.totalQuestions.color);
+                        drawTextWithOutline(ctx, `Total Questions: ${totalQuestions}`, coords.totalQuestions.x, coords.totalQuestions.y, coords.totalQuestions.color);
                     }
                     
                     if (coords.totalDuration && totalDuration) {
                         ctx.font = `bold ${coords.totalDuration.fontSize}px Arial`;
                         ctx.textAlign = coords.totalDuration.align;
-                        drawTextWithOutline(ctx, ` ${totalDuration} min`, coords.totalDuration.x, coords.totalDuration.y, coords.totalDuration.color);
+                        drawTextWithOutline(ctx, `Duration: ${totalDuration} min`, coords.totalDuration.x, coords.totalDuration.y, coords.totalDuration.color);
                     }
                 }
             }
@@ -737,5 +706,6 @@
             loadTemplates();
         });
     </script>
+
 </body>
 </html>
